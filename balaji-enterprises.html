@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Balaji Enterprises - Retail Management</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Balaji"/>
+<meta name="theme-color" content="#0d631b"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "error-container": "#ffdad6",
+          "primary-container": "#2e7d32",
+          "tertiary-fixed": "#f3e57b",
+          "surface-bright": "#fcf9f8",
+          "on-secondary-fixed": "#2b1611",
+          "on-primary-fixed-variant": "#005312",
+          "on-background": "#1b1c1c",
+          "surface-container-lowest": "#ffffff",
+          "primary": "#0d631b",
+          "surface-variant": "#e5e2e1",
+          "outline-variant": "#bfcaba",
+          "on-tertiary": "#ffffff",
+          "error": "#ba1a1a",
+          "on-tertiary-fixed-variant": "#4f4700",
+          "secondary-container": "#ffd7ce",
+          "primary-fixed-dim": "#88d982",
+          "secondary-fixed": "#ffdad2",
+          "surface-container-high": "#eae7e7",
+          "secondary-fixed-dim": "#e5beb5",
+          "surface-container-low": "#f6f3f2",
+          "on-error-container": "#93000a",
+          "inverse-on-surface": "#f3f0ef",
+          "primary-fixed": "#a3f69c",
+          "background": "#fcf9f8",
+          "on-tertiary-container": "#474000",
+          "on-secondary-fixed-variant": "#5c403a",
+          "outline": "#707a6c",
+          "tertiary-container": "#baad4a",
+          "on-primary": "#ffffff",
+          "on-primary-container": "#cbffc2",
+          "on-error": "#ffffff",
+          "surface-dim": "#dcd9d9",
+          "secondary": "#755750",
+          "on-surface-variant": "#40493d",
+          "inverse-primary": "#88d982",
+          "on-primary-fixed": "#002204",
+          "surface": "#fcf9f8",
+          "tertiary-fixed-dim": "#d6c862",
+          "on-secondary": "#ffffff",
+          "on-surface": "#1b1c1c",
+          "surface-container-highest": "#e5e2e1",
+          "surface-container": "#f0eded",
+          "tertiary": "#695f00",
+          "on-tertiary-fixed": "#201c00",
+          "on-secondary-container": "#7a5b54",
+          "inverse-surface": "#303030",
+          "surface-tint": "#1b6d24"
+        },
+        borderRadius: {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        spacing: {
+          "xs": "4px",
+          "xl": "32px",
+          "lg": "24px",
+          "base": "8px",
+          "input-height": "56px",
+          "touch-target-min": "48px",
+          "sm": "12px",
+          "margin-mobile": "20px",
+          "md": "16px",
+          "gutter-mobile": "16px"
+        },
+        fontFamily: {
+          "headline-sm": ["Work Sans"],
+          "body-lg": ["Work Sans"],
+          "headline-md": ["Work Sans"],
+          "body-md": ["Work Sans"],
+          "label-lg": ["Work Sans"],
+          "label-md": ["Work Sans"],
+          "button-text": ["Work Sans"],
+          "headline-lg": ["Work Sans"]
+        },
+        fontSize: {
+          "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+          "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+          "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+          "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+          "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+          "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "700"}],
+          "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-color: #fcf9f8;
+    color: #1b1c1c;
+    margin: 0;
+    overflow: hidden;
+    height: 100dvh;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .screen {
+    display: none;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fcf9f8;
+    animation: slideIn 0.25s ease;
+  }
+  .screen.active { display: block; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(18px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .loader-dots div {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  select {
+    appearance: none;
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(94,135,96)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+  }
+  .error-msg { color: #ba1a1a; font-size: 13px; margin-top: 6px; display: none; }
+  .nav-toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1b1c1c;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .nav-toast.show { opacity: 1; }
+  /* bill items */
+  #bill-items-body tr td { padding: 8px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- ───────────── SCREEN 1: SPLASH ───────────── -->
+<div class="screen active" id="screen-splash">
+  <main class="relative h-screen w-full flex flex-col items-center justify-center px-margin-mobile">
+    <div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
+      <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary-fixed blur-3xl"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-fixed blur-3xl"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center text-center max-w-md w-full">
+      <div class="mb-xl flex flex-col items-center">
+        <div class="w-32 h-32 bg-surface-container-highest rounded-xl flex items-center justify-center shadow-sm border border-outline-variant mb-lg overflow-hidden">
+          <img alt="Balaji Enterprises Logo" class="w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida/ADBb0ug_PIVWylz2WUiJjisylK9hPVpsI64vYbVbVM2yPyBz949pLY6sQBV04OJuzgsoyQpvbtLQaj_bXn3LVsmeS_uuagck3yqJP9K0v7lqo05IGFl0NSSUazp0LGQkWQfLQ7d9WJC9XHjTAMB2mvx-aEKaVm_qYXpfLPq0Uz_p98MZhe2-ZfzcZ4NGr2Sel_qTj4yZFwOklc7MylGgQvD6LSNYsX4LpWA1Il69VCpG8iETsOaxeqxQpUrmBER-"/>
+        </div>
+        <h1 class="font-headline-lg text-headline-lg text-primary mb-xs tracking-tight">Balaji Enterprises</h1>
+        <p class="font-label-lg text-label-lg text-secondary uppercase tracking-[0.2em] opacity-80">Retail Management</p>
+      </div>
+      <div class="mb-xl px-md">
+        <h2 class="font-headline-md text-headline-md text-on-surface mb-sm">Manage Your Shop with Ease</h2>
+        <div class="h-1 w-12 bg-tertiary-container mx-auto rounded-full"></div>
+      </div>
+      <div class="mt-auto pt-xl">
+        <div class="flex items-center gap-xs loader-dots">
+          <div class="w-2.5 h-2.5 bg-primary rounded-full"></div>
+          <div class="w-2.5 h-2.5 bg-primary rounded-full" style="animation-delay:0.2s"></div>
+          <div class="w-2.5 h-2.5 bg-primary rounded-full" style="animation-delay:0.4s"></div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-lg w-full text-center px-margin-mobile">
+      <span class="font-label-md text-label-md text-on-surface-variant opacity-60">System Version 2.4.0 • Modern Agronomy v1</span>
+    </div>
+  </main>
+</div>
+
+<!-- ───────────── SCREEN 2: LOGIN ───────────── -->
+<div class="screen" id="screen-login">
+  <main class="flex-grow flex items-center justify-center px-margin-mobile py-xl min-h-screen">
+    <div class="w-full max-w-[400px]">
+      <div class="text-center mb-xl">
+        <div class="mb-lg inline-flex items-center justify-center w-32 h-32 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant">
+          <img alt="Balaji Enterprises Logo" class="w-full h-full object-contain p-2"
+            src="https://lh3.googleusercontent.com/aida/ADBb0ug_PIVWylz2WUiJjisylK9hPVpsI64vYbVbVM2yPyBz949pLY6sQBV04OJuzgsoyQpvbtLQaj_bXn3LVsmeS_uuagck3yqJP9K0v7lqo05IGFl0NSSUazp0LGQkWQfLQ7d9WJC9XHjTAMB2mvx-aEKaVm_qYXpfLPq0Uz_p98MZhe2-ZfzcZ4NGr2Sel_qTj4yZFwOklc7MylGgQvD6LSNYsX4LpWA1Il69VCpG8iETsOaxeqxQpUrmBER-"/>
+        </div>
+        <h1 class="font-headline-lg text-headline-lg text-primary mb-xs">Balaji Enterprises</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">Manager Portal Access</p>
+      </div>
+      <div class="space-y-lg">
+        <div class="space-y-xs">
+          <label class="font-label-lg text-label-lg text-on-surface-variant block" for="identifier">Phone Number or Email</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline">
+              <span class="material-symbols-outlined">person</span>
+            </div>
+            <input class="w-full h-input-height pl-[48px] pr-md bg-surface border border-outline rounded-lg text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant" id="identifier" placeholder="Enter your registered contact" type="text"/>
+          </div>
+        </div>
+        <div class="space-y-xs">
+          <label class="font-label-lg text-label-lg text-on-surface-variant block" for="pin">6-Digit PIN or Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline">
+              <span class="material-symbols-outlined">lock</span>
+            </div>
+            <input class="w-full h-input-height pl-[48px] pr-md bg-surface border border-outline rounded-lg text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all tracking-[0.5em] placeholder:tracking-normal placeholder:text-outline-variant" id="pin" placeholder="••••••" type="password"/>
+          </div>
+          <p class="error-msg" id="login-error">⚠ Incorrect credentials. Try: manager / 123456</p>
+        </div>
+        <div class="flex items-center justify-between pt-xs">
+          <label class="flex items-center space-x-sm cursor-pointer">
+            <input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary bg-surface" type="checkbox"/>
+            <span class="font-label-md text-label-md text-on-surface-variant">Remember me</span>
+          </label>
+          <a class="font-label-md text-label-md text-secondary font-bold hover:underline" href="#">Forgot PIN?</a>
+        </div>
+        <button onclick="doLogin()" class="w-full h-input-height bg-primary text-on-primary font-button-text text-button-text rounded-lg shadow-sm active:scale-95 transition-transform duration-100 flex items-center justify-center space-x-base">
+          <span>Login</span>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+      <div class="mt-xl text-center">
+        <p class="font-body-md text-body-md text-on-surface-variant">New manager? <a class="text-primary font-bold hover:underline" href="#">Request account access</a></p>
+      </div>
+    </div>
+  </main>
+  <div class="fixed bottom-0 right-0 -z-10 opacity-10 pointer-events-none">
+    <img class="w-[300px] h-[300px] object-cover grayscale"
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSj6HljLBtRUiXSUZlmbDkIUYk4MDAggE9J1wYDjQn6DMhhY_BnrIqPNlPDmhCPG67xdavfrHCYVPJ-UdUMqng4BFecblDwSopmej1HU94iTdV-rboExv8lTv-FpOM0H9slL4GUy4LRgBRVwUpEzz560aEbydHKGqRsNQwDe5Y20Uu_xr8mlSZBSPNU2wfd0N_uy7kcD_x-ummBQqoKhw0Jqah5EUZgJ5c-SmsVO6Q2Ayav3pI_1jMpVIVaPiZO9kyfnJvOHw1_tEE"/>
+  </div>
+</div>
+
+<!-- ───────────── SCREEN 3: DASHBOARD ───────────── -->
+<div class="screen" id="screen-dashboard">
+  <div class="relative flex flex-col bg-background min-h-screen overflow-x-hidden">
+    <div class="flex items-center bg-background p-4 pb-2 justify-between border-b border-outline-variant sticky top-0 z-10">
+      <div class="text-on-surface flex size-12 shrink-0 items-center">
+        <span class="material-symbols-outlined">storefront</span>
+      </div>
+      <h2 class="text-on-surface text-headline-sm flex-1">Fertilizer Shop Manager</h2>
+      <button onclick="goTo('screen-login')" class="flex size-12 items-center justify-center cursor-pointer">
+        <span class="material-symbols-outlined">account_circle</span>
+      </button>
+    </div>
+
+    <div class="flex flex-wrap gap-4 p-4">
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded p-6 bg-primary-container text-on-primary">
+        <p class="text-on-primary/80 text-label-lg">Today's Sales</p>
+        <p class="text-headline-md font-bold">₹1,240.00</p>
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">trending_up</span>
+          <p class="text-label-md">+12% from yesterday</p>
+        </div>
+      </div>
+      <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded p-6 border border-outline-variant bg-surface-container-low">
+        <p class="text-on-surface-variant text-label-lg">Pending Bills</p>
+        <p class="text-on-surface text-headline-md font-bold">8 Bills</p>
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-error" style="font-variation-settings:'FILL' 1;">warning</span>
+          <p class="text-label-md text-error">Requires Attention</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-margin-mobile flex flex-col gap-4 mb-24">
+      <div class="flex items-center justify-between">
+        <h2 class="text-headline-md">Recent Transactions</h2>
+        <button onclick="navTo('sales')" class="text-primary font-bold text-label-lg flex items-center gap-1">
+          View All <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+      <div class="overflow-x-auto hide-scrollbar border border-outline-variant rounded-xl bg-surface-container-lowest">
+        <table class="w-full text-left border-collapse min-w-[580px]">
+          <thead>
+            <tr class="bg-surface-container text-on-surface-variant">
+              <th class="p-md text-label-md uppercase tracking-wider border-b border-outline-variant">S.No</th>
+              <th class="p-md text-label-md uppercase tracking-wider border-b border-outline-variant">Date</th>
+              <th class="p-md text-label-md uppercase tracking-wider border-b border-outline-variant">Product Name</th>
+              <th class="p-md text-label-md uppercase tracking-wider border-b border-outline-variant text-center">Qty</th>
+              <th class="p-md text-label-md uppercase tracking-wider border-b border-outline-variant text-right">Cost/Pc</th>
+              <th class="p-md text-label-md uppercase tracking-wider border-b border-outline-variant text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-outline-variant">
+            <tr class="hover:bg-surface-container-low transition-colors">
+              <td class="p-md text-body-md font-medium">1</td>
+              <td class="p-md text-body-md text-on-surface-variant">12 Aug</td>
+              <td class="p-md"><div class="flex flex-col"><span class="font-bold">Urea Nitrogen 46%</span><span class="text-label-md text-on-surface-variant">50kg Bag</span></div></td>
+              <td class="p-md text-body-md text-center">10</td>
+              <td class="p-md text-body-md text-right">₹450</td>
+              <td class="p-md text-body-md text-right font-bold text-primary">₹4,500</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition-colors">
+              <td class="p-md text-body-md font-medium">2</td>
+              <td class="p-md text-body-md text-on-surface-variant">11 Aug</td>
+              <td class="p-md"><div class="flex flex-col"><span class="font-bold">DAP Phosphate</span><span class="text-label-md text-on-surface-variant">50kg Bag</span></div></td>
+              <td class="p-md text-body-md text-center">5</td>
+              <td class="p-md text-body-md text-right">₹1,200</td>
+              <td class="p-md text-body-md text-right font-bold text-primary">₹6,000</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition-colors">
+              <td class="p-md text-body-md font-medium">3</td>
+              <td class="p-md text-body-md text-on-surface-variant">10 Aug</td>
+              <td class="p-md"><div class="flex flex-col"><span class="font-bold">Potash MOP</span><span class="text-label-md text-on-surface-variant">25kg Bag</span></div></td>
+              <td class="p-md text-body-md text-center">12</td>
+              <td class="p-md text-body-md text-right">₹550</td>
+              <td class="p-md text-body-md text-right font-bold text-primary">₹6,600</td>
+            </tr>
+            <tr class="hover:bg-surface-container-low transition-colors">
+              <td class="p-md text-body-md font-medium">4</td>
+              <td class="p-md text-body-md text-on-surface-variant">09 Aug</td>
+              <td class="p-md"><div class="flex flex-col"><span class="font-bold">Organic Compost</span><span class="text-label-md text-on-surface-variant">Bulk Load</span></div></td>
+              <td class="p-md text-body-md text-center">2</td>
+              <td class="p-md text-body-md text-right">₹2,200</td>
+              <td class="p-md text-body-md text-right font-bold text-primary">₹4,400</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="w-full h-44 rounded-xl overflow-hidden">
+        <img class="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVTl8PWZZ_Bgg3NXr_fxR4SJkaOWduMtrfjrmMkWNU-P6l-RmUl1ST4dQMOI7Krmta_uGaXlZlIK4JQh2zC4kRUMzxbq2RLkoLyW1STUSDxKuggkIZiOcRlOJTguWPHRAsjxtjr0ZcnspI-zyc_HZgbWsFpo8Ptqz6FS4D5JAxLY18stlwSufBgHWfDvASUw0y0inxKoZ9SCAlvB3CoO1ZnbGD0ZwOhjSREUVEr81pcdzTO19APYZHfMAQnAgB4cL5dI_pc9jfjEhi"/>
+      </div>
+    </div>
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 right-0 flex gap-2 border-t border-outline-variant bg-surface px-4 pb-3 pt-2 shadow-lg z-50">
+      <button onclick="navTo('home')" class="flex flex-1 flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
+        <p class="text-xs font-bold">Home</p>
+      </button>
+      <button onclick="navTo('sales')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">receipt_long</span>
+        <p class="text-xs font-medium">Sales</p>
+      </button>
+      <button onclick="navTo('customers')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">group</span>
+        <p class="text-xs font-medium">Customers</p>
+      </button>
+      <button onclick="navTo('inventory')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">inventory_2</span>
+        <p class="text-xs font-medium">Inventory</p>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────── SCREEN 4: SALES / NEW TRANSACTION ───────────── -->
+<div class="screen" id="screen-sales">
+  <div class="relative flex flex-col bg-background min-h-screen overflow-x-hidden">
+    <header class="flex items-center bg-background px-margin-mobile py-4 justify-between border-b border-outline-variant sticky top-0 z-10">
+      <button onclick="navTo('home')" class="text-on-surface flex size-12 shrink-0 items-center justify-center cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <h1 class="text-headline-sm flex-1 text-center font-bold">New Transaction</h1>
+      <div class="size-12"></div>
+    </header>
+    <main class="flex-1 pb-32">
+      <section class="p-margin-mobile bg-surface-container-low border-b border-outline-variant">
+        <h2 class="text-headline-sm mb-md">Add Inventory Item</h2>
+        <div class="space-y-md">
+          <label class="flex flex-col">
+            <span class="text-label-lg pb-xs">Select Product</span>
+            <select id="bill-product" class="h-input-height w-full rounded border border-outline bg-background px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+              <option value="">-- Select fertilizer --</option>
+              <option value="Urea (46-0-0)|450">Urea (46-0-0) — ₹450/bag</option>
+              <option value="DAP (18-46-0)|1200">DAP (18-46-0) — ₹1,200/bag</option>
+              <option value="MOP (0-0-60)|550">MOP (0-0-60) — ₹550/bag</option>
+              <option value="NPK 10-26-26|950">NPK 10-26-26 — ₹950/bag</option>
+              <option value="NPK 12-32-16|870">NPK 12-32-16 — ₹870/bag</option>
+              <option value="Organic Compost|2200">Organic Compost — ₹2,200/load</option>
+            </select>
+          </label>
+          <div class="grid grid-cols-2 gap-md">
+            <label class="flex flex-col">
+              <span class="text-label-lg pb-xs">Quantity (No.P)</span>
+              <input id="bill-qty" class="h-input-height w-full rounded border border-outline bg-background px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="0" type="number" min="1"/>
+            </label>
+            <label class="flex flex-col">
+              <span class="text-label-lg pb-xs">Cost/Piece (₹)</span>
+              <input id="bill-cost" class="h-input-height w-full rounded border border-outline bg-background px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="0.00" type="number" min="0"/>
+            </label>
+          </div>
+          <button onclick="addBillItem()" class="flex h-input-height w-full items-center justify-center gap-2 rounded bg-primary-container text-on-primary-container text-button-text hover:opacity-90 transition-all">
+            <span class="material-symbols-outlined">add</span> Add to Bill
+          </button>
+        </div>
+      </section>
+
+      <section class="p-margin-mobile">
+        <div class="flex items-center justify-between mb-md">
+          <h2 class="text-headline-sm">Bill Preview</h2>
+          <span id="bill-count-badge" class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-label-md">0 Items</span>
+        </div>
+        <div class="overflow-hidden border border-outline-variant rounded-lg bg-surface">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-surface-container text-label-lg">
+                <th class="p-base border-b border-outline-variant w-8 text-center">#</th>
+                <th class="p-base border-b border-outline-variant">Product</th>
+                <th class="p-base border-b border-outline-variant text-center">Qty</th>
+                <th class="p-base border-b border-outline-variant text-right">Total</th>
+                <th class="p-base border-b border-outline-variant text-center">Del</th>
+              </tr>
+            </thead>
+            <tbody id="bill-items-body" class="text-body-md divide-y divide-outline-variant">
+              <tr id="bill-empty-row">
+                <td colspan="5" class="p-4 text-center text-on-surface-variant text-label-md">No items added yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-lg space-y-sm px-base">
+          <div class="flex justify-between text-body-md">
+            <span class="text-on-surface-variant">Subtotal</span>
+            <span id="bill-subtotal">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-body-md">
+            <span class="text-on-surface-variant">Tax (GST 5%)</span>
+            <span id="bill-tax">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-headline-md pt-base border-t border-outline-variant">
+            <span>Grand Total</span>
+            <span id="bill-grand" class="text-primary font-bold">₹0.00</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="fixed bottom-0 left-0 right-0 p-margin-mobile bg-surface border-t border-outline-variant shadow-lg z-10">
+      <div class="flex gap-md">
+        <button onclick="discardBill()" class="flex-1 h-input-height rounded border border-secondary text-secondary font-bold text-button-text hover:bg-secondary-container transition-all">Discard</button>
+        <button onclick="confirmBill()" class="flex-[2] h-input-height rounded bg-primary text-on-primary font-bold text-button-text flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">check_circle</span> Confirm Bill
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ───────────── SCREEN 5: CUSTOMERS ───────────── -->
+<div class="screen" id="screen-customers">
+  <div class="relative flex flex-col bg-background min-h-screen">
+    <header class="flex items-center bg-surface border-b border-outline-variant px-margin-mobile h-[64px] sticky top-0 z-10">
+      <div class="flex items-center gap-4 w-full">
+        <button onclick="navTo('home')" class="text-primary cursor-pointer">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1 class="text-headline-sm text-on-surface">Customer Accounts</h1>
+      </div>
+    </header>
+    <main class="flex flex-col gap-lg pb-32">
+      <section class="px-margin-mobile mt-md">
+        <div class="relative flex items-center h-input-height w-full bg-surface-container rounded border border-outline-variant px-sm">
+          <span class="material-symbols-outlined text-outline">search</span>
+          <input class="bg-transparent border-none focus:ring-0 w-full text-body-md placeholder-outline ml-2" placeholder="Search by name or ID" type="text"/>
+        </div>
+      </section>
+
+      <section class="flex flex-col">
+        <div class="px-margin-mobile mb-base">
+          <h2 class="text-label-lg uppercase tracking-wider text-outline">Outstanding Balances</h2>
+        </div>
+
+        <!-- Customer 1 expanded -->
+        <div class="bg-surface-container-lowest border-y border-outline-variant px-margin-mobile py-md mb-xs">
+          <div class="flex justify-between items-center mb-md">
+            <div class="flex items-center gap-md">
+              <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+                <img class="w-full h-full object-cover"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLnhPOeS5kSStKNMM-IpdjBUC6hv9XuJ-vaYZSbDxuMdyYp8kUlvD46uzN8GhQc3T0R7b-4F2aiQvO1FIe5YC8vmXhnITCMpIDcAJ8d3OVVsDrpGTObMpiIh4Fsqh11RT4moudDME1JzUKNxeWEnBoOO9FeYiPHhay-7upYfmI602k7bInAtQq1ydaB9vT0fa_qtiOTLzOQGgduIfTM2bpFJaqSnnkNM0MTbhJQY73tDhTUZgpkxl_VBAHyptfSCcserMDX01foj0I"/>
+              </div>
+              <div>
+                <p class="text-headline-sm text-on-surface">Harish Kumar</p>
+                <p class="text-label-md text-outline">ID: #FERT-8821</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-label-md text-error font-bold">DUE BALANCE</p>
+              <p class="text-headline-sm text-primary">₹4,250.00</p>
+            </div>
+          </div>
+          <div class="mt-md bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-primary text-on-primary">
+                    <th class="p-base text-label-md">S.No</th>
+                    <th class="p-base text-label-md">Date</th>
+                    <th class="p-base text-label-md">Product</th>
+                    <th class="p-base text-label-md">Qty</th>
+                    <th class="p-base text-label-md">Cost/Pc</th>
+                    <th class="p-base text-label-md">Total</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                  <tr><td class="p-base text-label-md">01</td><td class="p-base text-label-md">12 Oct</td><td class="p-base font-medium">Urea Gold 50kg</td><td class="p-base">4</td><td class="p-base">₹450</td><td class="p-base font-bold">₹1,800</td></tr>
+                  <tr><td class="p-base text-label-md">02</td><td class="p-base text-label-md">15 Oct</td><td class="p-base font-medium">NPK 10-26-26</td><td class="p-base">2</td><td class="p-base">₹950</td><td class="p-base font-bold">₹1,900</td></tr>
+                  <tr><td class="p-base text-label-md">03</td><td class="p-base text-label-md">18 Oct</td><td class="p-base font-medium">DAP Fortified</td><td class="p-base">1</td><td class="p-base">₹550</td><td class="p-base font-bold">₹550</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr class="bg-surface-container-high border-t border-outline">
+                    <td class="p-base text-right text-label-lg" colspan="5">Grand Total:</td>
+                    <td class="p-base font-bold text-primary">₹4,250</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="p-base flex justify-center border-t border-outline-variant">
+              <button class="text-primary text-button-text py-sm flex items-center gap-xs">
+                <span class="material-symbols-outlined" style="font-size:20px;">download</span> Download Invoice
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer 2 -->
+        <div class="bg-surface-container-lowest border-b border-outline-variant px-margin-mobile py-md flex justify-between items-center">
+          <div class="flex items-center gap-md">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+              <img class="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ06sUWH3vlY3TJ051NQ_5UBlrGhn7P4BPmxj3fdcY9BTQmZ8XCRKZavUsrahKKhobhYBiEF40N_dAx3FTfF_BkuF2KMpZTKb9ndSRhEejDg0j23ynHgvn02n_vc08Rq7I6XmFDArDaE-HgJed_tKQQDNDPazC71O_f7tUs0oD14o2vHRm1kQs554w-AEoYddhyYP6BBM4ON4nqyWlPR07Hq22eFlhV5EK0RuLysWAr0V2mo8j944pRd0V0wnnzmhHTkGyBaK_UA3h"/>
+            </div>
+            <div>
+              <p class="text-headline-sm text-on-surface">Rajeshwari Devi</p>
+              <p class="text-label-md text-outline">Balance: ₹1,200.00</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline">chevron_right</span>
+        </div>
+
+        <!-- Customer 3 -->
+        <div class="bg-surface-container-lowest border-b border-outline-variant px-margin-mobile py-md flex justify-between items-center">
+          <div class="flex items-center gap-md">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+              <img class="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcMmFwVRQcMt3jsKxSCBO55W4gFsR595QRBnjhgcsbDrzTEuS_MjR3pIvWLUXHOvOyovG_i-P6Yp3jwQk4A7GahT82w1OhgKWJpzxBDvmjDdoxM2V0DN5Gkn2frU5eBKmrWMW4wsPbJ77mF5gSNLcA8I8WdPnH9kEgizwjHeh-KVLpyQVNsEqyR9L11BsNT3I3ed3d2viJLo9iyEwrHao4fMH-PXrP-2q2Wj59310OJU-_nMEb0ckSFh8qpZHkKf7OAZ_tjlmHwP-l"/>
+            </div>
+            <div>
+              <p class="text-headline-sm text-on-surface">Sunil Meena</p>
+              <p class="text-label-md text-outline">Balance: ₹8,940.00</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline">chevron_right</span>
+        </div>
+      </section>
+
+      <section class="px-margin-mobile">
+        <div class="bg-primary-container p-md rounded-xl text-on-primary-container flex flex-col gap-sm">
+          <div class="flex justify-between items-center">
+            <p class="text-body-md opacity-90">Total Outstanding Receivables</p>
+            <span class="material-symbols-outlined">payments</span>
+          </div>
+          <p class="text-headline-lg">₹14,390.00</p>
+          <div class="flex gap-sm mt-xs">
+            <button onclick="showToast('Reminders sent!')" class="bg-on-primary-container text-primary px-md py-sm rounded-lg text-button-text flex-1">Send Reminders</button>
+            <button onclick="showToast('Report generated!')" class="bg-primary border border-on-primary-container text-on-primary px-md py-sm rounded-lg text-button-text flex-1">Generate Report</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="fixed bottom-0 left-0 right-0 z-20 flex gap-2 border-t border-outline-variant bg-surface px-4 pb-3 pt-2">
+      <button onclick="navTo('home')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">home</span><p class="text-xs font-medium">Home</p>
+      </button>
+      <button onclick="navTo('sales')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">receipt_long</span><p class="text-xs font-medium">Sales</p>
+      </button>
+      <button onclick="navTo('customers')" class="flex flex-1 flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">group</span><p class="text-xs font-bold">Customers</p>
+      </button>
+      <button onclick="navTo('inventory')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">inventory_2</span><p class="text-xs font-medium">Inventory</p>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────── SCREEN 6: INVENTORY ───────────── -->
+<div class="screen" id="screen-inventory">
+  <div class="relative flex flex-col bg-surface min-h-screen">
+    <div class="flex items-center bg-surface p-4 pb-2 justify-between border-b border-outline-variant sticky top-0 z-10">
+      <button onclick="navTo('home')" class="text-on-surface flex size-12 shrink-0 items-center justify-center">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <h2 class="text-on-surface text-headline-sm flex-1 text-center">Fertilizer Inventory</h2>
+      <div class="flex w-12 items-center justify-end">
+        <button class="flex items-center justify-center size-touch-target-min bg-transparent text-on-surface">
+          <span class="material-symbols-outlined">filter_list</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="px-margin-mobile py-4">
+      <div class="flex items-stretch rounded-lg border border-outline bg-surface-container-low h-input-height">
+        <div class="text-outline flex items-center justify-center pl-4">
+          <span class="material-symbols-outlined">search</span>
+        </div>
+        <input class="flex w-full min-w-0 flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline-variant px-4 text-body-md" placeholder="Search fertilizers..."/>
+      </div>
+    </div>
+
+    <div class="flex gap-2 px-margin-mobile pb-4 overflow-x-auto">
+      <button class="flex h-10 shrink-0 items-center gap-x-2 rounded-full bg-primary-container px-4 text-on-primary-container border border-primary">
+        <p class="text-label-lg">In Stock</p><span class="material-symbols-outlined text-[20px]">expand_more</span>
+      </button>
+      <button class="flex h-10 shrink-0 items-center gap-x-2 rounded-full bg-surface-container-high px-4 text-on-surface-variant border border-outline-variant">
+        <p class="text-label-lg">Low Stock</p><span class="material-symbols-outlined text-[20px]">expand_more</span>
+      </button>
+      <button class="flex h-10 shrink-0 items-center gap-x-2 rounded-full bg-surface-container-high px-4 text-on-surface-variant border border-outline-variant">
+        <p class="text-label-lg">Organic</p><span class="material-symbols-outlined text-[20px]">expand_more</span>
+      </button>
+    </div>
+
+    <div class="flex-1 flex flex-col pb-28">
+      <!-- Item 1 -->
+      <div class="flex flex-col bg-surface px-margin-mobile py-4 border-b border-outline-variant">
+        <div class="flex items-center gap-4 justify-between mb-2">
+          <div class="flex items-center gap-4">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shadow-sm border border-outline-variant" style='background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8WJ7eckozyM2PwISf5-QAfg7LpKcO9xEu_zfnT5E9QO2DlXl2BeG0egzumQ5KdZ_c6xPB2S0PinWVS0LmxRC81FglKkUk-47EKrt38FdRt5SKjY2hX5Wy18H6yl7tMZeap-HRiuZRJfzdepr2uLibmZTHe7cM2BwIKj1kx7noLJngHllj7SmeppKMQCo9KxzgIqcnFaWDkGLtWVeFvU2z_pw3RQF-DMqxnDw2vtrdHWjVCzVG13GalrX8A6qte4eUUB2akeAaKkSe")'></div>
+            <div><p class="text-on-surface text-headline-sm">Organic Compost</p><p class="text-secondary text-label-md">NPK: 1-1-1 • 50kg Bag</p></div>
+          </div>
+          <div class="text-right"><p class="text-primary text-headline-sm font-bold">₹2,200</p><p class="text-outline text-label-md">Purchase Price</p></div>
+        </div>
+        <div class="w-full bg-surface-container-highest rounded-full h-2 mt-2"><div class="bg-primary h-2 rounded-full" style="width:85%"></div></div>
+        <div class="flex justify-between mt-1"><p class="text-primary text-label-md font-semibold">120 units in stock</p><p class="text-outline text-label-md">Threshold: 20</p></div>
+      </div>
+      <!-- Item 2 -->
+      <div class="flex flex-col bg-surface px-margin-mobile py-4 border-b border-outline-variant">
+        <div class="flex items-center gap-4 justify-between mb-2">
+          <div class="flex items-center gap-4">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shadow-sm border border-outline-variant" style='background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7UC_6GGjFyLwAYcobrEjceZ34O1wbBYooV5-oNWYktdYURnRJGTvMLaGgMLJPy_A3Ujb0bzqM6_8h_BwR2QAdhWm_V-OZi3_XlRuCmoNuvqWkVrE-A-bDXPbUZJPhjkZAtNdc8a_EhgwBeHADIR2-OwWDc3QtoaTzgymRzoe_0sgGnR4t0J9IuFOl36gqjq2Pi6HCztMUmnAXpHVlFl4dTzC-lkPdwNWfdyl1hXxE9HU3NAZWF2Fqn4DwS0cWi4mOD_fnCb4JqVKF")'></div>
+            <div><p class="text-on-surface text-headline-sm">Liquid Nitrogen</p><p class="text-secondary text-label-md">NPK: 30-0-0 • 20L Drum</p></div>
+          </div>
+          <div class="text-right"><p class="text-primary text-headline-sm font-bold">₹82.50</p><p class="text-outline text-label-md">Purchase Price</p></div>
+        </div>
+        <div class="w-full bg-surface-container-highest rounded-full h-2 mt-2"><div class="bg-tertiary h-2 rounded-full" style="width:15%"></div></div>
+        <div class="flex justify-between mt-1"><p class="text-tertiary text-label-md font-bold">8 units — LOW STOCK</p><p class="text-outline text-label-md">Threshold: 15</p></div>
+      </div>
+      <!-- Item 3 -->
+      <div class="flex flex-col bg-surface px-margin-mobile py-4 border-b border-outline-variant">
+        <div class="flex items-center gap-4 justify-between mb-2">
+          <div class="flex items-center gap-4">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shadow-sm border border-outline-variant" style='background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuADX6RxS-kZ3c94nsV5CaZDr-wIKiLkypOsTEA4zId0YY_PNLPhw9qA4Yz0C4NEqX8lcskVkuR1umzcombZka9KeKSafBeZ49Q7E-fY_8BfSvt8THx_zZ-pguajpe72hUkRbqLHVpFixsaGQhZa5Am2LWiksiIYIBB8-Do9xrxVR6ognnhc98dESeHBVKjvPNNg7RPxL9E8VMc1PejzbeunTrMDdMkMBCfQuh18BX1Wng4WMGGWn5N7B2gfhP0LHPir-5EAztrkDgaz")'></div>
+            <div><p class="text-on-surface text-headline-sm">Triple Superphosphate</p><p class="text-secondary text-label-md">NPK: 0-46-0 • 25kg Bag</p></div>
+          </div>
+          <div class="text-right"><p class="text-primary text-headline-sm font-bold">₹68.00</p><p class="text-outline text-label-md">Purchase Price</p></div>
+        </div>
+        <div class="w-full bg-surface-container-highest rounded-full h-2 mt-2"><div class="bg-primary h-2 rounded-full" style="width:45%"></div></div>
+        <div class="flex justify-between mt-1"><p class="text-on-surface-variant text-label-md font-semibold">42 units in stock</p><p class="text-outline text-label-md">Threshold: 10</p></div>
+      </div>
+      <!-- Item 4 -->
+      <div class="flex flex-col bg-surface px-margin-mobile py-4 border-b border-outline-variant">
+        <div class="flex items-center gap-4 justify-between mb-2">
+          <div class="flex items-center gap-4">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shadow-sm border border-outline-variant" style='background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuADOYpcQF0WPNxKHtWJurytw-brr58citKUQiYBlIBk3bhC7sC3Sjq45hTAVPogXckF4cu46Si63Qnrdd0I_UhXIDAeGo05OlScGkVedpBqGWivXIc9GwSFx1H_FYrmiiJL9VQ4jPmf57X-heDhvT2SstK7eyzwYQFtgkAHP_vFrrCQQQDWp4JnY_Uzo36HHk7vlDdwyELGd4dY7ACI8LbQu7C80z-lOsPFqzgyNUvmwIFfyZKndpJDmu2oXk9Eix_vBb-LGf642k-B")'></div>
+            <div><p class="text-on-surface text-headline-sm">Potash (MOP)</p><p class="text-secondary text-label-md">NPK: 0-0-60 • 50kg Bag</p></div>
+          </div>
+          <div class="text-right"><p class="text-primary text-headline-sm font-bold">₹550</p><p class="text-outline text-label-md">Purchase Price</p></div>
+        </div>
+        <div class="w-full bg-surface-container-highest rounded-full h-2 mt-2"><div class="bg-primary h-2 rounded-full" style="width:95%"></div></div>
+        <div class="flex justify-between mt-1"><p class="text-primary text-label-md font-semibold">210 units in stock</p><p class="text-outline text-label-md">Threshold: 25</p></div>
+      </div>
+    </div>
+
+    <button onclick="showToast('Add product feature coming soon!')" class="fixed bottom-24 right-6 flex size-14 items-center justify-center rounded-xl bg-primary text-on-primary shadow-lg">
+      <span class="material-symbols-outlined">add</span>
+    </button>
+
+    <div class="fixed bottom-0 left-0 right-0 flex gap-2 border-t border-outline-variant bg-surface px-4 pb-3 pt-2 z-50">
+      <button onclick="navTo('home')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">home</span><p class="text-xs font-medium">Home</p>
+      </button>
+      <button onclick="navTo('sales')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">receipt_long</span><p class="text-xs font-medium">Sales</p>
+      </button>
+      <button onclick="navTo('customers')" class="flex flex-1 flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">group</span><p class="text-xs font-medium">Customers</p>
+      </button>
+      <button onclick="navTo('inventory')" class="flex flex-1 flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">inventory_2</span><p class="text-xs font-bold">Inventory</p>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="nav-toast" id="nav-toast"></div>
+
+<script>
+  // ── State ──
+  let billItems = [];
+  let billCounter = 0;
+
+  // ── Screen navigation ──
+  function goTo(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    document.getElementById(screenId).scrollTop = 0;
+  }
+
+  function navTo(tab) {
+    const map = { home: 'screen-dashboard', sales: 'screen-sales', customers: 'screen-customers', inventory: 'screen-inventory' };
+    goTo(map[tab]);
+  }
+
+  // ── Toast ──
+  function showToast(msg) {
+    const t = document.getElementById('nav-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ── Splash → Login after 2.5s ──
+  setTimeout(() => goTo('screen-login'), 2500);
+
+  // ── Login logic ──
+  function doLogin() {
+    const id = document.getElementById('identifier').value.trim();
+    const pin = document.getElementById('pin').value.trim();
+    const err = document.getElementById('login-error');
+    if ((id === 'manager' || id === 'admin') && pin === '123456') {
+      err.style.display = 'none';
+      goTo('screen-dashboard');
+    } else {
+      err.style.display = 'block';
+    }
+  }
+
+  // Also allow Enter key on pin field
+  document.getElementById('pin').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  // ── Bill logic ──
+  function updateBillUI() {
+    const body = document.getElementById('bill-items-body');
+    const emptyRow = document.getElementById('bill-empty-row');
+    const badge = document.getElementById('bill-count-badge');
+
+    if (billItems.length === 0) {
+      emptyRow.style.display = '';
+      badge.textContent = '0 Items';
+      document.getElementById('bill-subtotal').textContent = '₹0.00';
+      document.getElementById('bill-tax').textContent = '₹0.00';
+      document.getElementById('bill-grand').textContent = '₹0.00';
+      return;
+    }
+
+    emptyRow.style.display = 'none';
+    badge.textContent = billItems.length + (billItems.length === 1 ? ' Item' : ' Items');
+
+    // Rebuild rows
+    Array.from(body.querySelectorAll('tr.bill-row')).forEach(r => r.remove());
+    let subtotal = 0;
+    billItems.forEach((item, i) => {
+      const total = item.qty * item.cost;
+      subtotal += total;
+      const tr = document.createElement('tr');
+      tr.className = 'bill-row border-b border-outline-variant';
+      tr.innerHTML = `
+        <td class="p-base text-center text-label-md opacity-70">${i+1}</td>
+        <td class="p-base"><div class="font-bold text-sm">${item.name}</div><div class="text-label-md text-on-surface-variant">₹${item.cost}/bag</div></td>
+        <td class="p-base text-center">${item.qty}</td>
+        <td class="p-base text-right font-bold">₹${total.toLocaleString('en-IN')}</td>
+        <td class="p-base text-center"><button onclick="removeBillItem(${item.id})" class="text-error"><span class="material-symbols-outlined" style="font-size:18px;">delete</span></button></td>
+      `;
+      body.appendChild(tr);
+    });
+
+    const tax = Math.round(subtotal * 0.05);
+    const grand = subtotal + tax;
+    document.getElementById('bill-subtotal').textContent = '₹' + subtotal.toLocaleString('en-IN') + '.00';
+    document.getElementById('bill-tax').textContent = '₹' + tax.toLocaleString('en-IN') + '.00';
+    document.getElementById('bill-grand').textContent = '₹' + grand.toLocaleString('en-IN') + '.00';
+  }
+
+  function addBillItem() {
+    const sel = document.getElementById('bill-product');
+    const qtyEl = document.getElementById('bill-qty');
+    const costEl = document.getElementById('bill-cost');
+
+    if (!sel.value) { showToast('Please select a product'); return; }
+    const [name, defaultCost] = sel.value.split('|');
+    const qty = parseInt(qtyEl.value) || 0;
+    const cost = parseFloat(costEl.value) || parseFloat(defaultCost) || 0;
+
+    if (qty <= 0) { showToast('Enter a valid quantity'); return; }
+    if (cost <= 0) { showToast('Enter a valid cost'); return; }
+
+    billCounter++;
+    billItems.push({ id: billCounter, name, qty, cost });
+    updateBillUI();
+
+    sel.value = '';
+    qtyEl.value = '';
+    costEl.value = '';
+    showToast('Item added to bill ✓');
+  }
+
+  function removeBillItem(id) {
+    billItems = billItems.filter(i => i.id !== id);
+    updateBillUI();
+  }
+
+  function discardBill() {
+    billItems = [];
+    updateBillUI();
+    showToast('Bill discarded');
+    navTo('home');
+  }
+
+  function confirmBill() {
+    if (billItems.length === 0) { showToast('Add at least one item first'); return; }
+    billItems = [];
+    updateBillUI();
+    showToast('✓ Bill confirmed successfully!');
+    setTimeout(() => navTo('home'), 800);
+  }
+
+  // Auto-fill cost when product selected
+  document.getElementById('bill-product').addEventListener('change', function() {
+    if (this.value) {
+      const cost = this.value.split('|')[1];
+      document.getElementById('bill-cost').value = cost;
+    }
+  });
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js');
+    });
+  }
+</script>
+</body>
+</html>
